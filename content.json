@@ -107,13 +107,14 @@
         "current_position": "Senior Scientist, Creekside Environmental Products LLC"
       },
       {
-        "id": "tharindu-karunaratne",
+        "id": "dr-tharindu-n-karunaratne",
         "name": "Dr. Tharindu N. Karunaratne",
         "degree": "Ph.D. Sustainable Bioproducts",
         "school": "Mississippi State University, USA",
+        "email": "",
+        "photo": "dr-tharindu-n-karunaratne.jpg",
         "note": "M.S. Chemistry, Wayne State University, USA",
-        "current_position": "Research Chemist, Graver Technologies LLC",
-        "photo": ""
+        "current_position": "Research Chemist, Graver Technologies LLC"
       }
     ]
   },
