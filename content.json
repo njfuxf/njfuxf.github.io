@@ -14,30 +14,82 @@
     "bio": "The Zhang Lab at UMaine is dedicated to advancing innovative technologies that integrate biobased materials into additive manufacturing, develop biobased carbon (nano)materials for environmental remediation, synthesize biobased thermosets for adhesives and coatings, and apply cellulosic (nano)materials in sustainable packaging. With an interdisciplinary focus, our mission is to lead the development of technologies that not only minimize environmental impact but also foster ecosystem regeneration and drive the circular economy."
   },
   "education": [
-    { "year": "2016", "degree": "Ph.D. Forest Resources", "school": "Mississippi State University, USA" },
-    { "year": "2013", "degree": "M.S.E. Wood Science & Technology", "school": "Nanjing Forestry University, China" },
-    { "year": "2010", "degree": "B.S.E. Wood Science & Engineering", "school": "Nanjing Forestry University, China" }
+    {
+      "year": "2016",
+      "degree": "Ph.D. Forest Resources",
+      "school": "Mississippi State University, USA"
+    },
+    {
+      "year": "2013",
+      "degree": "M.S.E. Wood Science & Technology",
+      "school": "Nanjing Forestry University, China"
+    },
+    {
+      "year": "2010",
+      "degree": "B.S.E. Wood Science & Engineering",
+      "school": "Nanjing Forestry University, China"
+    }
   ],
   "appointments": [
-    { "period": "2025–Present", "title": "Associate Professor", "org": "ASCC, University of Maine, USA" },
-    { "period": "2023–2025", "title": "Sr. Process Engineer", "org": "Product R&D Group, Dart Container, USA" },
-    { "period": "2020–2023", "title": "Assistant Research Professor", "org": "Mississippi State University, USA" },
-    { "period": "2017–2019", "title": "Postdoctoral Research Associate", "org": "Mississippi State University, USA" }
+    {
+      "period": "2025âPresent",
+      "title": "Associate Professor",
+      "org": "ASCC, University of Maine, USA"
+    },
+    {
+      "period": "2023â2025",
+      "title": "Sr. Process Engineer",
+      "org": "Product R&D Group, Dart Container, USA"
+    },
+    {
+      "period": "2020â2023",
+      "title": "Assistant Research Professor",
+      "org": "Mississippi State University, USA"
+    },
+    {
+      "period": "2017â2019",
+      "title": "Postdoctoral Research Associate",
+      "org": "Mississippi State University, USA"
+    }
   ],
   "research_areas": [
-    { "icon": "📦", "title": "Sustainable Packaging", "desc": "PFAS-free bio-based coatings, barrier systems, and cellulosic packaging materials for circular economy applications" },
-    { "icon": "🌿", "title": "Lignin Chemistry & Valorization", "desc": "Lignin depolymerization, aromatic monomer production, vitrimer systems, and lignin-based adhesives and coatings" },
-    { "icon": "🏗️", "title": "Large-Format Additive Manufacturing", "desc": "LFAM with wood-fiber composites, flame-retardant PP/WF systems, and 3D-printed bio-based construction materials" },
-    { "icon": "💧", "title": "Cellulose Interface Engineering", "desc": "Multivalent metal-ion (MIM) hydrophobization platform, cellulose-water interface chemistry, and nanocellulose processing" },
-    { "icon": "♻️", "title": "Biochar & Carbon Nanomaterials", "desc": "Lignocellulosic-derived biochars for environmental remediation and as functional fillers in composite systems" },
-    { "icon": "🤖", "title": "AI for Materials Discovery", "desc": "Agentic AI architectures, active learning, and high-throughput workflows applied to bio-based interface systems" }
+    {
+      "icon": "ð¦",
+      "title": "Sustainable Packaging",
+      "desc": "PFAS-free bio-based coatings, barrier systems, and cellulosic packaging materials for circular economy applications"
+    },
+    {
+      "icon": "ð¿",
+      "title": "Lignin Chemistry & Valorization",
+      "desc": "Lignin depolymerization, aromatic monomer production, vitrimer systems, and lignin-based adhesives and coatings"
+    },
+    {
+      "icon": "ðï¸",
+      "title": "Large-Format Additive Manufacturing",
+      "desc": "LFAM with wood-fiber composites, flame-retardant PP/WF systems, and 3D-printed bio-based construction materials"
+    },
+    {
+      "icon": "ð§",
+      "title": "Cellulose Interface Engineering",
+      "desc": "Multivalent metal-ion (MIM) hydrophobization platform, cellulose-water interface chemistry, and nanocellulose processing"
+    },
+    {
+      "icon": "â»ï¸",
+      "title": "Biochar & Carbon Nanomaterials",
+      "desc": "Lignocellulosic-derived biochars for environmental remediation and as functional fillers in composite systems"
+    },
+    {
+      "icon": "ð¤",
+      "title": "AI for Materials Discovery",
+      "desc": "Agentic AI architectures, active learning, and high-throughput workflows applied to bio-based interface systems"
+    }
   ],
   "team": {
     "current": [
       {
         "id": "sesadhi-rajapaksha",
         "name": "Sesadhi Rajapaksha",
-        "degree": "Master Student · Forest Resources",
+        "degree": "Master Student Â· Forest Resources",
         "school": "University of Maine",
         "email": "sesadhi.rajapaksha@maine.edu",
         "photo": ""
@@ -45,13 +97,14 @@
     ],
     "alumni": [
       {
-        "id": "oshani-nayanathara",
+        "id": "dr-r-m-oshani-nayanathara",
         "name": "Dr. R.M. Oshani Nayanathara",
         "degree": "Ph.D. Sustainable Bioproducts",
         "school": "Mississippi State University, USA",
+        "email": "",
+        "photo": "dr-r-m-oshani-nayanathara.jpg",
         "note": "B.S. Chemistry, Institute of Chemistry Ceylon, Sri Lanka",
-        "current_position": "Senior Scientist, Creekside Environmental Products LLC",
-        "photo": ""
+        "current_position": "Senior Scientist, Creekside Environmental Products LLC"
       },
       {
         "id": "tharindu-karunaratne",
