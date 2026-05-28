@@ -1,0 +1,86 @@
+{
+  "about": {
+    "name": "Xuefeng (Jason) Zhang, PhD",
+    "title": "Associate Professor of Sustainable Materials & Technology",
+    "affiliation1": "Advanced Structures & Composites Center (ASCC)",
+    "affiliation2": "School of Forest Resources",
+    "affiliation3": "University of Maine, Orono, ME, USA",
+    "email": "xuefeng.zhang1@maine.edu",
+    "office": "ASCC 228",
+    "phone": "662-617-1010",
+    "scholar": "https://scholar.google.com/citations?user=XXPnRWQAAAAJ&sortby=pubdate",
+    "umaine_page": "https://forest.umaine.edu/xuefeng-zhang-staff-page/",
+    "citations": "2,300+",
+    "bio": "The Zhang Lab at UMaine is dedicated to advancing innovative technologies that integrate biobased materials into additive manufacturing, develop biobased carbon (nano)materials for environmental remediation, synthesize biobased thermosets for adhesives and coatings, and apply cellulosic (nano)materials in sustainable packaging. With an interdisciplinary focus, our mission is to lead the development of technologies that not only minimize environmental impact but also foster ecosystem regeneration and drive the circular economy."
+  },
+  "education": [
+    { "year": "2016", "degree": "Ph.D. Forest Resources", "school": "Mississippi State University, USA" },
+    { "year": "2013", "degree": "M.S.E. Wood Science & Technology", "school": "Nanjing Forestry University, China" },
+    { "year": "2010", "degree": "B.S.E. Wood Science & Engineering", "school": "Nanjing Forestry University, China" }
+  ],
+  "appointments": [
+    { "period": "2025–Present", "title": "Associate Professor", "org": "ASCC, University of Maine, USA" },
+    { "period": "2023–2025", "title": "Sr. Process Engineer", "org": "Product R&D Group, Dart Container, USA" },
+    { "period": "2020–2023", "title": "Assistant Research Professor", "org": "Mississippi State University, USA" },
+    { "period": "2017–2019", "title": "Postdoctoral Research Associate", "org": "Mississippi State University, USA" }
+  ],
+  "research_areas": [
+    { "icon": "📦", "title": "Sustainable Packaging", "desc": "PFAS-free bio-based coatings, barrier systems, and cellulosic packaging materials for circular economy applications" },
+    { "icon": "🌿", "title": "Lignin Chemistry & Valorization", "desc": "Lignin depolymerization, aromatic monomer production, vitrimer systems, and lignin-based adhesives and coatings" },
+    { "icon": "🏗️", "title": "Large-Format Additive Manufacturing", "desc": "LFAM with wood-fiber composites, flame-retardant PP/WF systems, and 3D-printed bio-based construction materials" },
+    { "icon": "💧", "title": "Cellulose Interface Engineering", "desc": "Multivalent metal-ion (MIM) hydrophobization platform, cellulose-water interface chemistry, and nanocellulose processing" },
+    { "icon": "♻️", "title": "Biochar & Carbon Nanomaterials", "desc": "Lignocellulosic-derived biochars for environmental remediation and as functional fillers in composite systems" },
+    { "icon": "🤖", "title": "AI for Materials Discovery", "desc": "Agentic AI architectures, active learning, and high-throughput workflows applied to bio-based interface systems" }
+  ],
+  "team": {
+    "current": [
+      {
+        "id": "sesadhi-rajapaksha",
+        "name": "Sesadhi Rajapaksha",
+        "degree": "Master Student · Forest Resources",
+        "school": "University of Maine",
+        "email": "sesadhi.rajapaksha@maine.edu",
+        "photo": ""
+      }
+    ],
+    "alumni": [
+      {
+        "id": "oshani-nayanathara",
+        "name": "Dr. R.M. Oshani Nayanathara",
+        "degree": "Ph.D. Sustainable Bioproducts",
+        "school": "Mississippi State University, USA",
+        "note": "B.S. Chemistry, Institute of Chemistry Ceylon, Sri Lanka",
+        "current_position": "Senior Scientist, Creekside Environmental Products LLC",
+        "photo": ""
+      },
+      {
+        "id": "tharindu-karunaratne",
+        "name": "Dr. Tharindu N. Karunaratne",
+        "degree": "Ph.D. Sustainable Bioproducts",
+        "school": "Mississippi State University, USA",
+        "note": "M.S. Chemistry, Wayne State University, USA",
+        "current_position": "Research Chemist, Graver Technologies LLC",
+        "photo": ""
+      }
+    ]
+  },
+  "publications": [
+    {
+      "id": "pub001",
+      "title": "Engineering the cellulose-water interface via multivalent metal-ion coordination",
+      "authors": "Zhang, X. et al.",
+      "journal": "ACS Applied Materials & Interfaces",
+      "year": "2025",
+      "doi": ""
+    },
+    {
+      "id": "pub002",
+      "title": "Large-format additive manufacturing of wood-fiber reinforced polymer composites",
+      "authors": "Zhang, X. et al.",
+      "journal": "Composites Part A",
+      "year": "2024",
+      "doi": ""
+    }
+  ],
+  "news": []
+}

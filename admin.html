@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Zhang Lab — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1a14;--surface:#182419;--card:#1e2f22;--border:#2d4535;--accent:#4a8c62;--gold:#c8a84b;--text:#e8f0ea;--muted:#7a9b82;--danger:#e05252;--success:#52b07a;--warning:#d4a843}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2.5rem;width:100%;max-width:420px}
+.login-logo{text-align:center;margin-bottom:2rem}
+.login-logo h1{font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:0.3rem}
+.login-logo p{font-size:0.82rem;color:var(--muted)}
+.login-logo .icon{font-size:2.5rem;margin-bottom:0.8rem}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem}
+input[type=text],input[type=password],input[type=email],input[type=number],textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.65rem 0.9rem;color:var(--text);font-size:0.88rem;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:80px}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.2rem;border-radius:6px;font-size:0.82rem;font-weight:600;border:none;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:white}.btn-primary:hover{background:#3d7a54}
+.btn-gold{background:var(--gold);color:#1a1000}.btn-gold:hover{background:#b8943a}
+.btn-danger{background:var(--danger);color:white}.btn-danger:hover{background:#c94444}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--accent);color:var(--text)}
+.btn-sm{padding:0.35rem 0.8rem;font-size:0.75rem}
+.btn-full{width:100%;justify-content:center}
+.error-msg{background:rgba(224,82,82,0.1);border:1px solid rgba(224,82,82,0.3);border-radius:6px;padding:0.7rem;font-size:0.82rem;color:var(--danger);margin-top:0.8rem;display:none}
+/* MAIN LAYOUT */
+.app{display:none;min-height:100vh}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;padding:1.5rem 0}
+.sidebar-logo{padding:0 1.2rem 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.sidebar-logo h2{font-size:0.95rem;font-weight:700;color:var(--text)}
+.sidebar-logo p{font-size:0.72rem;color:var(--muted);margin-top:0.2rem}
+.role-badge{display:inline-block;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.4rem}
+.role-prof{background:rgba(200,168,75,0.15);color:var(--gold)}
+.role-student{background:rgba(74,140,98,0.15);color:var(--accent)}
+.nav-item{display:flex;align-items:center;gap:0.7rem;padding:0.65rem 1.2rem;cursor:pointer;color:var(--muted);font-size:0.85rem;font-weight:500;transition:all 0.15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(74,140,98,0.08)}
+.nav-item.active{color:var(--text);background:rgba(74,140,98,0.12);border-left-color:var(--accent)}
+.nav-icon{font-size:1rem;width:20px;text-align:center}
+.sidebar-footer{margin-top:auto;padding:1rem 1.2rem;border-top:1px solid var(--border)}
+.main{margin-left:220px;padding:2rem;min-height:100vh}
+.page-header{margin-bottom:2rem}
+.page-header h1{font-size:1.4rem;font-weight:700;margin-bottom:0.3rem}
+.page-header p{font-size:0.85rem;color:var(--muted)}
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.2rem}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.card-title{font-size:0.95rem;font-weight:600}
+/* MEMBER LIST */
+.member-row{display:flex;align-items:center;gap:1rem;padding:0.9rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);margin-bottom:0.6rem}
+.member-avatar{width:44px;height:44px;border-radius:50%;background:var(--border);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.member-avatar img{width:100%;height:100%;object-fit:cover}
+.member-info{flex:1;min-width:0}
+.member-info h4{font-size:0.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.member-info p{font-size:0.75rem;color:var(--muted)}
+.member-actions{display:flex;gap:0.4rem;flex-shrink:0}
+/* PUB LIST */
+.pub-row{padding:0.9rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);margin-bottom:0.6rem}
+.pub-row h4{font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;line-height:1.4}
+.pub-meta{font-size:0.75rem;color:var(--muted)}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.modal-header h2{font-size:1.1rem;font-weight:700}
+.modal-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;padding:0.2rem}
+.modal-close:hover{color:var(--text)}
+.modal-footer{display:flex;gap:0.8rem;justify-content:flex-end;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+/* PHOTO UPLOAD */
+.photo-upload-area{border:2px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;transition:border-color 0.2s}
+.photo-upload-area:hover{border-color:var(--accent)}
+.photo-preview{width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 1rem;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.photo-preview img{width:100%;height:100%;object-fit:cover}
+.upload-hint{font-size:0.78rem;color:var(--muted);margin-top:0.5rem}
+/* STATUS TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.9rem 1.2rem;font-size:0.85rem;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;transition:all 0.3s;display:flex;align-items:center;gap:0.6rem;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:var(--success);color:var(--success)}
+.toast.error{border-color:var(--danger);color:var(--danger)}
+.toast.loading{border-color:var(--gold);color:var(--gold)}
+.mini-spinner{width:14px;height:14px;border:2px solid rgba(200,168,75,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* SETTINGS */
+.settings-section{margin-bottom:2rem}
+.settings-section h3{font-size:0.85rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.two-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+/* TABS */
+.tab-bar{display:flex;gap:0.3rem;background:var(--surface);border-radius:8px;padding:0.3rem;margin-bottom:1.5rem;width:fit-content}
+.tab-btn{padding:0.45rem 1rem;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:0.82rem;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif}
+.tab-btn.active{background:var(--accent);color:white}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:2.5rem;color:var(--muted)}
+.empty-state .icon{font-size:2rem;margin-bottom:0.8rem}
+.empty-state p{font-size:0.85rem}
+/* READONLY NOTICE */
+.readonly-notice{background:rgba(212,168,67,0.1);border:1px solid rgba(212,168,67,0.25);border-radius:6px;padding:0.7rem 1rem;font-size:0.8rem;color:var(--warning);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">🌲</div>
+      <h1>Zhang Lab Admin</h1>
+      <p>University of Maine · ASCC</p>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPwd" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In →</button>
+    <div class="error-msg" id="loginError">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <h2>Zhang Lab Admin</h2>
+      <p>UMaine · ASCC</p>
+      <div class="role-badge" id="roleBadge">Professor</div>
+    </div>
+    <div class="nav-item active" onclick="showPage('team')" id="nav-team"><span class="nav-icon">👥</span> Team Members</div>
+    <div class="nav-item" onclick="showPage('publications')" id="nav-publications"><span class="nav-icon">📄</span> Publications</div>
+    <div class="nav-item" onclick="showPage('research')" id="nav-research"><span class="nav-icon">🔬</span> Research Areas</div>
+    <div class="nav-item" onclick="showPage('about')" id="nav-about"><span class="nav-icon">📝</span> About & Bio</div>
+    <div class="nav-item" id="nav-settings" onclick="showPage('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+    <div class="sidebar-footer">
+      <button class="btn btn-ghost btn-full btn-sm" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- TEAM PAGE -->
+    <div id="page-team">
+      <div class="page-header">
+        <h1>👥 Team Members</h1>
+        <p>Manage current students and alumni</p>
+      </div>
+      <div id="teamReadonlyNotice" class="readonly-notice" style="display:none">⚠️ Student accounts can add members but cannot delete existing ones.</div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Current Members</span>
+          <button class="btn btn-primary btn-sm" onclick="openAddMember('current')">+ Add Member</button>
+        </div>
+        <div id="currentMemberList"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Alumni</span>
+          <button class="btn btn-primary btn-sm" onclick="openAddMember('alumni')">+ Add Alumni</button>
+        </div>
+        <div id="alumniMemberList"></div>
+      </div>
+    </div>
+
+    <!-- PUBLICATIONS PAGE -->
+    <div id="page-publications" style="display:none">
+      <div class="page-header">
+        <h1>📄 Publications</h1>
+        <p>Add and manage selected publications shown on the website</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Publication List <span id="pubCount" style="color:var(--muted);font-weight:400;font-size:0.82rem"></span></span>
+          <button class="btn btn-primary btn-sm" onclick="openAddPub()">+ Add Publication</button>
+        </div>
+        <div id="pubListAdmin"></div>
+      </div>
+    </div>
+
+    <!-- RESEARCH PAGE -->
+    <div id="page-research" style="display:none">
+      <div class="page-header">
+        <h1>🔬 Research Areas</h1>
+        <p>Edit research area cards displayed on the website</p>
+      </div>
+      <div id="researchAdminNotice" class="readonly-notice" style="display:none">⚠️ Only professors can edit research areas.</div>
+      <div id="researchList"></div>
+      <div id="researchEditBtns"></div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="page-about" style="display:none">
+      <div class="page-header">
+        <h1>📝 About & Bio</h1>
+        <p>Edit the lab bio and basic information</p>
+      </div>
+      <div id="aboutReadonlyNotice" class="readonly-notice" style="display:none">⚠️ Only professors can edit the bio and contact information.</div>
+      <div class="card" id="aboutCard">
+        <div class="card-header"><span class="card-title">Lab Bio</span></div>
+        <div class="form-group"><label>Bio Text</label><textarea id="bioText" rows="6"></textarea></div>
+        <div class="form-group"><label>Citations Count</label><input type="text" id="citationsInput" placeholder="e.g. 2,300+"/></div>
+        <button class="btn btn-gold" onclick="saveBio()">💾 Save Bio</button>
+      </div>
+      <div class="card" id="contactCard">
+        <div class="card-header"><span class="card-title">Contact Information</span></div>
+        <div class="two-col-grid">
+          <div class="form-group"><label>Email</label><input type="email" id="contactEmail"/></div>
+          <div class="form-group"><label>Office</label><input type="text" id="contactOffice"/></div>
+          <div class="form-group"><label>Phone</label><input type="text" id="contactPhone"/></div>
+          <div class="form-group"><label>Google Scholar URL</label><input type="text" id="contactScholar"/></div>
+        </div>
+        <button class="btn btn-gold" onclick="saveContact()">💾 Save Contact Info</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="page-settings" style="display:none">
+      <div class="page-header">
+        <h1>⚙️ Settings</h1>
+        <p>Configure GitHub connection and access passwords</p>
+      </div>
+      <div id="settingsReadonlyNotice" class="readonly-notice" style="display:none">⚠️ Only professors can change settings.</div>
+
+      <div class="card">
+        <div class="settings-section">
+          <h3>🔑 GitHub Connection</h3>
+          <div class="form-group"><label>GitHub Personal Access Token</label><input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"/><div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">Generate at: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens</div></div>
+          <div class="form-group"><label>Repository (owner/repo)</label><input type="text" id="ghRepo" placeholder="njfuxf/njfuxf.github.io"/></div>
+          <button class="btn btn-primary" onclick="saveGitHubSettings()">Save & Test Connection</button>
+          <span id="ghTestResult" style="margin-left:0.8rem;font-size:0.82rem"></span>
+        </div>
+        <div class="settings-section">
+          <h3>🔒 Access Passwords</h3>
+          <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem">Students only need the Student Password. Professor Password gives full access.</p>
+          <div class="two-col-grid">
+            <div class="form-group"><label>Professor Password</label><input type="password" id="newProfPwd" placeholder="New professor password"/></div>
+            <div class="form-group"><label>Student Password</label><input type="password" id="newStudentPwd" placeholder="New student password"/></div>
+          </div>
+          <button class="btn btn-gold" onclick="savePasswords()">🔒 Update Passwords</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD/EDIT MEMBER MODAL -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="memberModalTitle">Add Member</h2>
+      <button class="modal-close" onclick="closeModal('memberModal')">✕</button>
+    </div>
+    <input type="hidden" id="memberType"/>
+    <input type="hidden" id="memberEditId"/>
+
+    <div style="margin-bottom:1.2rem">
+      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+        <div class="photo-preview" id="photoPreview"><span>👤</span></div>
+        <p style="font-size:0.85rem;color:var(--text);font-weight:500">Click to upload photo</p>
+        <p class="upload-hint">Photo will be auto-cropped to a square (400×400px). Any size works.</p>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)"/>
+      <div id="photoFilename" style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:0.5rem"></div>
+    </div>
+    <canvas id="cropCanvas" style="display:none"></canvas>
+
+    <div class="form-group"><label>Full Name *</label><input type="text" id="memberName" placeholder="Dr. First Last"/></div>
+    <div class="form-group"><label>Degree / Role *</label><input type="text" id="memberDegree" placeholder="Ph.D. Sustainable Bioproducts  or  Master Student · Forest Resources"/></div>
+    <div class="form-group"><label>School / University</label><input type="text" id="memberSchool" placeholder="University of Maine"/></div>
+    <div class="form-group"><label>Email (optional)</label><input type="email" id="memberEmail" placeholder="name@maine.edu"/></div>
+    <div class="form-group" id="memberNoteGroup"><label>Additional Note (alumni)</label><input type="text" id="memberNote" placeholder="M.S. Chemistry, Wayne State University"/></div>
+    <div class="form-group" id="memberPositionGroup"><label>Current Position (alumni)</label><input type="text" id="memberPosition" placeholder="Research Chemist at Company LLC"/></div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('memberModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveMember()">💾 Save Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PUBLICATION MODAL -->
+<div class="modal-overlay" id="pubModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="pubModalTitle">Add Publication</h2>
+      <button class="modal-close" onclick="closeModal('pubModal')">✕</button>
+    </div>
+    <input type="hidden" id="pubEditId"/>
+    <div class="form-group"><label>Title *</label><textarea id="pubTitle" rows="2" placeholder="Full paper title"></textarea></div>
+    <div class="form-group"><label>Authors</label><input type="text" id="pubAuthors" placeholder="Zhang, X. et al.  or  Zhang, X., Smith, J., ..."/></div>
+    <div class="form-group"><label>Journal / Conference *</label><input type="text" id="pubJournal" placeholder="ACS Applied Materials & Interfaces"/></div>
+    <div class="form-group"><label>Year *</label><input type="number" id="pubYear" placeholder="2025" min="1990" max="2030"/></div>
+    <div class="form-group"><label>DOI / URL (optional)</label><input type="text" id="pubDoi" placeholder="https://doi.org/10.xxxx/..."/></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('pubModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="savePub()">💾 Save Publication</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────
+let role = null;
+let content = null;
+let photoBase64 = null;
+let photoFilenameStr = '';
+
+const PROF_PWD_KEY  = 'zl_prof_pwd';
+const STU_PWD_KEY   = 'zl_stu_pwd';
+const GH_TOKEN_KEY  = 'zl_gh_token';
+const GH_REPO_KEY   = 'zl_gh_repo';
+
+function getProfPwd()   { return localStorage.getItem(PROF_PWD_KEY)  || 'prof2025'; }
+function getStuPwd()    { return localStorage.getItem(STU_PWD_KEY)   || 'lab2025';  }
+function getGhToken()   { return localStorage.getItem(GH_TOKEN_KEY)  || ''; }
+function getGhRepo()    { return localStorage.getItem(GH_REPO_KEY)   || 'njfuxf/njfuxf.github.io'; }
+
+// ─── AUTH ─────────────────────────────────────────────────
+function doLogin() {
+  const pwd = document.getElementById('loginPwd').value;
+  if (pwd === getProfPwd()) {
+    role = 'professor';
+    startApp();
+  } else if (pwd === getStuPwd()) {
+    role = 'student';
+    startApp();
+  } else {
+    const el = document.getElementById('loginError');
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+  }
+}
+
+function doLogout() {
+  role = null; content = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('loginPwd').value = '';
+}
+
+async function startApp() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('roleBadge').textContent = role === 'professor' ? 'Professor' : 'Student';
+  document.getElementById('roleBadge').className = 'role-badge ' + (role === 'professor' ? 'role-prof' : 'role-student');
+
+  // Hide settings for students
+  if (role === 'student') {
+    document.getElementById('nav-settings').style.display = 'none';
+  }
+
+  // Populate settings fields
+  document.getElementById('ghToken').value = getGhToken();
+  document.getElementById('ghRepo').value = getGhRepo();
+
+  showToast('Loading content...', 'loading');
+  await fetchContent();
+  renderTeam();
+  renderPubs();
+  renderAbout();
+  renderResearch();
+  showToast('Content loaded ✓', 'success');
+}
+
+// ─── GITHUB API ───────────────────────────────────────────
+async function ghGet(path) {
+  const r = await fetch(`https://api.github.com/repos/${getGhRepo()}/contents/${path}`, {
+    headers: { Authorization: `token ${getGhToken()}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!r.ok) throw new Error(`GitHub GET failed: ${r.status}`);
+  return r.json();
+}
+
+async function ghPut(path, contentStr, message, isBinary = false) {
+  let sha = null;
+  try { const d = await ghGet(path); sha = d.sha; } catch(e) {}
+  const body = {
+    message,
+    content: isBinary ? contentStr : btoa(unescape(encodeURIComponent(contentStr))),
+    ...(sha && { sha })
+  };
+  const r = await fetch(`https://api.github.com/repos/${getGhRepo()}/contents/${path}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `token ${getGhToken()}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) { const e = await r.json(); throw new Error(e.message || 'Push failed'); }
+  return r.json();
+}
+
+async function fetchContent() {
+  try {
+    const d = await ghGet('content.json');
+    content = JSON.parse(atob(d.content.replace(/\n/g,'')));
+  } catch(e) {
+    showToast('Could not load content.json from GitHub. Check your token and repo in Settings.', 'error');
+    content = { about:{name:'',title:'',email:'',office:'',phone:'',scholar:'',citations:'',bio:''},
+      education:[], appointments:[], research_areas:[], team:{current:[],alumni:[]}, publications:[] };
+  }
+}
+
+async function pushContent(message) {
+  if (!getGhToken()) { showToast('No GitHub token set. Go to Settings.', 'error'); return false; }
+  showToast('Saving...', 'loading');
+  try {
+    await ghPut('content.json', JSON.stringify(content, null, 2), message);
+    showToast('Saved & published! ✓', 'success');
+    return true;
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+    return false;
+  }
+}
+
+// ─── TOAST ───────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + type;
+  t.innerHTML = (type === 'loading' ? '<div class="mini-spinner"></div>' : (type === 'success' ? '✓' : '✗')) + ' ' + msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  if (type !== 'loading') toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────
+function showPage(name) {
+  ['team','publications','research','about','settings'].forEach(p => {
+    document.getElementById('page-'+p).style.display = p === name ? '' : 'none';
+    document.getElementById('nav-'+p)?.classList.toggle('active', p === name);
+  });
+}
+
+// ─── TEAM ─────────────────────────────────────────────────
+function renderTeam() {
+  document.getElementById('teamReadonlyNotice').style.display = role === 'student' ? '' : 'none';
+  renderMemberList('current');
+  renderMemberList('alumni');
+}
+
+function renderMemberList(type) {
+  const el = document.getElementById(type + 'MemberList');
+  const items = content.team[type];
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">👤</div><p>No members yet</p></div>';
+    return;
+  }
+  el.innerHTML = items.map((m,i) => `
+    <div class="member-row">
+      <div class="member-avatar">
+        ${m.photo ? `<img src="https://raw.githubusercontent.com/${getGhRepo()}/main/images/${m.photo}" onerror="this.parentElement.innerHTML='👤'"/>` : '👤'}
+      </div>
+      <div class="member-info">
+        <h4>${m.name}</h4>
+        <p>${m.degree}${m.current_position ? ' · ' + m.current_position : ''}</p>
+      </div>
+      <div class="member-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openEditMember('${type}',${i})">Edit</button>
+        ${role === 'professor' ? `<button class="btn btn-danger btn-sm" onclick="deleteMember('${type}',${i})">Delete</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function openAddMember(type) {
+  document.getElementById('memberModalTitle').textContent = 'Add ' + (type === 'current' ? 'Current Member' : 'Alumni');
+  document.getElementById('memberType').value = type;
+  document.getElementById('memberEditId').value = '';
+  clearMemberForm();
+  document.getElementById('memberNoteGroup').style.display = type === 'alumni' ? '' : 'none';
+  document.getElementById('memberPositionGroup').style.display = type === 'alumni' ? '' : 'none';
+  openModal('memberModal');
+}
+
+function openEditMember(type, idx) {
+  const m = content.team[type][idx];
+  document.getElementById('memberModalTitle').textContent = 'Edit Member';
+  document.getElementById('memberType').value = type;
+  document.getElementById('memberEditId').value = idx;
+  document.getElementById('memberName').value = m.name || '';
+  document.getElementById('memberDegree').value = m.degree || '';
+  document.getElementById('memberSchool').value = m.school || '';
+  document.getElementById('memberEmail').value = m.email || '';
+  document.getElementById('memberNote').value = m.note || '';
+  document.getElementById('memberPosition').value = m.current_position || '';
+  document.getElementById('memberNoteGroup').style.display = type === 'alumni' ? '' : 'none';
+  document.getElementById('memberPositionGroup').style.display = type === 'alumni' ? '' : 'none';
+  // Show existing photo
+  if (m.photo) {
+    document.getElementById('photoPreview').innerHTML = `<img src="https://raw.githubusercontent.com/${getGhRepo()}/main/images/${m.photo}"/>`;
+    document.getElementById('photoFilename').textContent = 'Current: ' + m.photo;
+    photoFilenameStr = m.photo;
+  } else {
+    clearPhotoPreview();
+  }
+  openModal('memberModal');
+}
+
+function clearMemberForm() {
+  ['memberName','memberDegree','memberSchool','memberEmail','memberNote','memberPosition'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  clearPhotoPreview();
+}
+
+function clearPhotoPreview() {
+  photoBase64 = null;
+  photoFilenameStr = '';
+  document.getElementById('photoPreview').innerHTML = '<span>👤</span>';
+  document.getElementById('photoFilename').textContent = '';
+}
+
+async function saveMember() {
+  const type = document.getElementById('memberType').value;
+  const editId = document.getElementById('memberEditId').value;
+  const name = document.getElementById('memberName').value.trim();
+  const degree = document.getElementById('memberDegree').value.trim();
+  if (!name || !degree) { showToast('Name and Degree are required', 'error'); return; }
+
+  const idStr = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+  // Upload photo if new one selected
+  let photoFile = photoFilenameStr;
+  if (photoBase64) {
+    const ext = 'jpg';
+    photoFile = idStr + '.' + ext;
+    try {
+      await ghPut('images/' + photoFile, photoBase64, 'Upload photo: ' + photoFile, true);
+    } catch(e) {
+      showToast('Photo upload failed: ' + e.message, 'error'); return;
+    }
+  }
+
+  const member = {
+    id: idStr, name, degree,
+    school: document.getElementById('memberSchool').value.trim(),
+    email: document.getElementById('memberEmail').value.trim(),
+    photo: photoFile,
+    ...(type === 'alumni' ? {
+      note: document.getElementById('memberNote').value.trim(),
+      current_position: document.getElementById('memberPosition').value.trim()
+    } : {})
+  };
+
+  if (editId !== '') {
+    content.team[type][parseInt(editId)] = member;
+  } else {
+    content.team[type].push(member);
+  }
+
+  const ok = await pushContent((editId !== '' ? 'Update' : 'Add') + ' team member: ' + name);
+  if (ok) { closeModal('memberModal'); renderTeam(); }
+}
+
+async function deleteMember(type, idx) {
+  if (!confirm('Delete this member?')) return;
+  content.team[type].splice(idx, 1);
+  const ok = await pushContent('Remove team member');
+  if (ok) renderTeam();
+}
+
+// ─── PHOTO PROCESSING ────────────────────────────────────
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      // Auto center-crop to square, resize to 400x400
+      const canvas = document.getElementById('cropCanvas');
+      canvas.width = 400; canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      const size = Math.min(img.width, img.height);
+      const sx = (img.width - size) / 2;
+      const sy = (img.height - size) / 2;
+      ctx.drawImage(img, sx, sy, size, size, 0, 0, 400, 400);
+      const dataURL = canvas.toDataURL('image/jpeg', 0.88);
+      photoBase64 = dataURL.split(',')[1];
+      // Preview
+      document.getElementById('photoPreview').innerHTML = `<img src="${dataURL}"/>`;
+      // Auto-generate filename from name field
+      const name = document.getElementById('memberName').value.trim();
+      const idStr = name ? name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') : file.name.split('.')[0];
+      photoFilenameStr = idStr + '.jpg';
+      document.getElementById('photoFilename').textContent = '✓ Ready to upload as: ' + photoFilenameStr;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+// ─── PUBLICATIONS ─────────────────────────────────────────
+function renderPubs() {
+  const el = document.getElementById('pubListAdmin');
+  document.getElementById('pubCount').textContent = `(${content.publications.length})`;
+  if (!content.publications.length) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📄</div><p>No publications yet</p></div>';
+    return;
+  }
+  el.innerHTML = content.publications.map((p,i) => `
+    <div class="pub-row">
+      <h4>${p.title}</h4>
+      <p class="pub-meta">${p.authors} · <strong style="color:var(--accent)">${p.journal}</strong> · ${p.year}</p>
+      <div style="display:flex;gap:0.4rem;margin-top:0.6rem">
+        <button class="btn btn-ghost btn-sm" onclick="openEditPub(${i})">Edit</button>
+        ${role === 'professor' ? `<button class="btn btn-danger btn-sm" onclick="deletePub(${i})">Delete</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function openAddPub() {
+  document.getElementById('pubModalTitle').textContent = 'Add Publication';
+  document.getElementById('pubEditId').value = '';
+  ['pubTitle','pubAuthors','pubJournal','pubYear','pubDoi'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pubYear').value = new Date().getFullYear();
+  openModal('pubModal');
+}
+
+function openEditPub(idx) {
+  const p = content.publications[idx];
+  document.getElementById('pubModalTitle').textContent = 'Edit Publication';
+  document.getElementById('pubEditId').value = idx;
+  document.getElementById('pubTitle').value = p.title || '';
+  document.getElementById('pubAuthors').value = p.authors || '';
+  document.getElementById('pubJournal').value = p.journal || '';
+  document.getElementById('pubYear').value = p.year || '';
+  document.getElementById('pubDoi').value = p.doi || '';
+  openModal('pubModal');
+}
+
+async function savePub() {
+  const title = document.getElementById('pubTitle').value.trim();
+  const journal = document.getElementById('pubJournal').value.trim();
+  const year = document.getElementById('pubYear').value;
+  if (!title || !journal || !year) { showToast('Title, Journal, and Year are required', 'error'); return; }
+  const editId = document.getElementById('pubEditId').value;
+  const pub = {
+    id: 'pub' + Date.now(),
+    title,
+    authors: document.getElementById('pubAuthors').value.trim(),
+    journal,
+    year: String(year),
+    doi: document.getElementById('pubDoi').value.trim()
+  };
+  if (editId !== '') {
+    pub.id = content.publications[parseInt(editId)].id;
+    content.publications[parseInt(editId)] = pub;
+  } else {
+    content.publications.unshift(pub);
+  }
+  const ok = await pushContent((editId !== '' ? 'Update' : 'Add') + ' publication: ' + title.substring(0,50));
+  if (ok) { closeModal('pubModal'); renderPubs(); }
+}
+
+async function deletePub(idx) {
+  if (!confirm('Delete this publication?')) return;
+  content.publications.splice(idx, 1);
+  const ok = await pushContent('Remove publication');
+  if (ok) renderPubs();
+}
+
+// ─── ABOUT ───────────────────────────────────────────────
+function renderAbout() {
+  const isStudent = role === 'student';
+  document.getElementById('aboutReadonlyNotice').style.display = isStudent ? '' : 'none';
+  if (isStudent) {
+    document.getElementById('aboutCard').style.opacity = '0.5';
+    document.getElementById('contactCard').style.opacity = '0.5';
+    document.querySelectorAll('#page-about .btn').forEach(b => b.disabled = true);
+  }
+  const a = content.about;
+  document.getElementById('bioText').value = a.bio || '';
+  document.getElementById('citationsInput').value = a.citations || '';
+  document.getElementById('contactEmail').value = a.email || '';
+  document.getElementById('contactOffice').value = a.office || '';
+  document.getElementById('contactPhone').value = a.phone || '';
+  document.getElementById('contactScholar').value = a.scholar || '';
+}
+
+async function saveBio() {
+  if (role !== 'professor') { showToast('Only professors can edit the bio', 'error'); return; }
+  content.about.bio = document.getElementById('bioText').value.trim();
+  content.about.citations = document.getElementById('citationsInput').value.trim();
+  await pushContent('Update lab bio');
+}
+
+async function saveContact() {
+  if (role !== 'professor') { showToast('Only professors can edit contact info', 'error'); return; }
+  content.about.email  = document.getElementById('contactEmail').value.trim();
+  content.about.office = document.getElementById('contactOffice').value.trim();
+  content.about.phone  = document.getElementById('contactPhone').value.trim();
+  content.about.scholar = document.getElementById('contactScholar').value.trim();
+  await pushContent('Update contact information');
+}
+
+// ─── RESEARCH ────────────────────────────────────────────
+function renderResearch() {
+  const isStudent = role === 'student';
+  document.getElementById('researchAdminNotice').style.display = isStudent ? '' : 'none';
+  const el = document.getElementById('researchList');
+  el.innerHTML = content.research_areas.map((r,i) => `
+    <div class="card" style="${isStudent ? 'opacity:0.6' : ''}">
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem">
+        <span style="font-size:1.4rem">${r.icon}</span>
+        <span style="font-weight:600">${r.title}</span>
+        ${!isStudent ? `<button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="editResearchArea(${i})">Edit</button>` : ''}
+      </div>
+      <p style="font-size:0.85rem;color:var(--muted)">${r.desc}</p>
+    </div>`).join('');
+}
+
+function editResearchArea(idx) {
+  const r = content.research_areas[idx];
+  const icon = prompt('Icon (emoji):', r.icon);
+  if (icon === null) return;
+  const title = prompt('Title:', r.title);
+  if (title === null) return;
+  const desc = prompt('Description:', r.desc);
+  if (desc === null) return;
+  content.research_areas[idx] = { icon: icon.trim(), title: title.trim(), desc: desc.trim() };
+  pushContent('Update research area: ' + title).then(ok => { if(ok) renderResearch(); });
+}
+
+// ─── SETTINGS ────────────────────────────────────────────
+async function saveGitHubSettings() {
+  const token = document.getElementById('ghToken').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  localStorage.setItem(GH_TOKEN_KEY, token);
+  localStorage.setItem(GH_REPO_KEY, repo);
+  const el = document.getElementById('ghTestResult');
+  el.textContent = 'Testing...';
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers: { Authorization: `token ${token}` }
+    });
+    if (r.ok) {
+      el.style.color = 'var(--success)';
+      el.textContent = '✓ Connected successfully';
+    } else {
+      el.style.color = 'var(--danger)';
+      el.textContent = '✗ Failed (' + r.status + ')';
+    }
+  } catch(e) {
+    el.style.color = 'var(--danger)';
+    el.textContent = '✗ Network error';
+  }
+}
+
+function savePasswords() {
+  const pp = document.getElementById('newProfPwd').value.trim();
+  const sp = document.getElementById('newStudentPwd').value.trim();
+  if (pp) localStorage.setItem(PROF_PWD_KEY, pp);
+  if (sp) localStorage.setItem(STU_PWD_KEY, sp);
+  document.getElementById('newProfPwd').value = '';
+  document.getElementById('newStudentPwd').value = '';
+  showToast('Passwords updated ✓', 'success');
+}
+
+// ─── MODAL HELPERS ────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); photoBase64 = null; }
+</script>
+</body>
+</html>
