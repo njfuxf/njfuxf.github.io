@@ -13,7 +13,16 @@
   "appointments": [],
   "research_areas": [],
   "team": {
-    "current": [],
+    "current": [
+      {
+        "id": "xx-xx",
+        "name": "XX XX",
+        "degree": "Master Student · Forest Resources",
+        "school": "University of Maine",
+        "email": "sesadhi.rajapaksha@maine.edu",
+        "photo": ""
+      }
+    ],
     "alumni": []
   },
   "publications": [
